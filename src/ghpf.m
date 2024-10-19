@@ -47,7 +47,7 @@ function ghpf = ghpf(image)
     D = sqrt(U.^2 + V.^2);
     H = exp(-(D.^2)./(2*(D0^2)));
     H = 1 - H;
-    H = fftshift(H); figure;imshow(H);title('LPF Gaussian Mask');
+    H = fftshift(H); figure;imshow(H);title('HPF Gaussian Mask');
     figure, mesh(H);
     %Step 5: Kalikan F dengan H
     G = H.*F;
