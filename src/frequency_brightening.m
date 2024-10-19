@@ -27,7 +27,7 @@ function bright_image = frequency_brightening(image)
             figure, imshow(S2, []); title(['Fourier Spectrum Channel ', num2str(channel)]);
 
             % Create Low Pass Filter (LPF)
-            D0 = 200; % cut-off frequency
+            D0 = 250; % cut-off frequency
             u = 0:(P-1);
             v = 0:(Q-1);
             idx = find(u > P/2);
@@ -76,7 +76,7 @@ function bright_image = frequency_brightening(image)
         figure, imshow(S2, []); title('Fourier Spectrum');
     
         % Membuat Low Pass Filter (LPF)
-        D0 = 200; % cut-off frequency
+        D0 = 250; % cut-off frequency
     
         % Set up range of variables.
         u = 0:(P-1);
