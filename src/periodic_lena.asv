@@ -1,0 +1,24 @@
+function filtered_image = periodic_lena()
+    image = imread('lena_periodic.jpeg');
+    [M,N,~] = size(image);
+
+    imshow(image); title('Original Image');
+
+    f = im2double(image(:,:,1));
+    F = fft2(f);
+    F = fftshift(F);
+    S2 = log(1+abs(F));
+
+    figure, imshow(S2,[]); title ('Fourier Spectrum');
+    for i = 122:123
+        F(i,i) = 0;
+    end
+
+    for i = 102:103
+       
+        F(i,i) = 0;
+    end
+    G = real(ifft2(ifftshift(F)));
+    figure; imshow(G);title('Output image');
+    filtered_image = G;
+end
