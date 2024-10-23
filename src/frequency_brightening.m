@@ -1,4 +1,4 @@
-function bright_image = frequency_brightening(image)
+function bright_image = frequency_brightening(image, val)
     % Check if the image is RGB
     if size(image, 3) == 3
         % Initialize the output image
@@ -27,7 +27,6 @@ function bright_image = frequency_brightening(image)
             figure, imshow(S2, []); title(['Fourier Spectrum Channel ', num2str(channel)]);
 
             % Create Low Pass Filter (LPF)
-            D0 = 250; % cut-off frequency
             u = 0:(P-1);
             v = 0:(Q-1);
             idx = find(u > P/2);
@@ -36,9 +35,9 @@ function bright_image = frequency_brightening(image)
             v(idy) = v(idy) - Q;
             [V, U] = meshgrid(v, u);
             D = sqrt(U.^2 + V.^2);
-            H = exp(-(D.^2) / (2 * (D0^2)));
-            H = fftshift(H); 
-            figure, mesh(H);
+            H = double(D>0);
+            H = fftshift(H);
+            H = H * val;
 
             % Apply the filter
             G = H .* F;
@@ -48,8 +47,8 @@ function bright_image = frequency_brightening(image)
             G2 = real(ifft2(G1)); % Get the real part
 
             % Normalize brightness
-            G2 = G2 - min(G2(:)); % Normalize to positive range
-            G2 = G2 / max(G2(:)); % Scale to [0, 1]
+            % G2 = G2 - min(G2(:)); % Normalize to positive range
+            % G2 = G2 / max(G2(:)); % Scale to [0, 1]
 
             % Store the brightened channel
             bright_image(:, :, channel) = G2(1:M, 1:N);
@@ -75,9 +74,6 @@ function bright_image = frequency_brightening(image)
         S2 = log(1 + abs(F)); % Spektrum Fourier
         figure, imshow(S2, []); title('Fourier Spectrum');
     
-        % Membuat Low Pass Filter (LPF)
-        D0 = 250; % cut-off frequency
-    
         % Set up range of variables.
         u = 0:(P-1);
         v = 0:(Q-1);
@@ -89,8 +85,9 @@ function bright_image = frequency_brightening(image)
         % Compute the meshgrid arrays
         [V, U] = meshgrid(v, u);
         D = sqrt(U.^2 + V.^2);
-        H = exp(-(D.^2)./(2*(D0^2)));
-        figure, mesh(H);
+        H = double(D>0);
+        H = fftshift(H);
+        H = H * val;
     
         % Mengaplikasikan filter
         G = H .* F;
@@ -100,8 +97,8 @@ function bright_image = frequency_brightening(image)
         G2 = real(ifft2(G1)); % Mengambil bagian real
     
         % Mengatur kecerahan
-        G2 = G2 - min(G2(:)); % Normalisasi ke rentang positif
-        G2 = G2 / max(G2(:)); % Skala ke rentang 0-1
+        % G2 = G2 - min(G2(:)); % Normalisasi ke rentang positif
+        % G2 = G2 / max(G2(:)); % Skala ke rentang 0-1
         
         % Menampilkan citra hasil
         bright_image = G2(1:M, 1:N); % Citra yang lebih terang
