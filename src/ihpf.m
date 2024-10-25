@@ -1,4 +1,4 @@
-function ihpf = ihpf(image)
+function ihpf = ihpf(image,Dinput)
     f = image;
     imshow(f);
     [M, N, depth] = size(f);
@@ -22,7 +22,7 @@ function ihpf = ihpf(image)
     figure, imshow(S2, []); title('Fourier spectrum');
     
     % Step 4: Bangkitkan fungsi penapis H untuk Ideal Highpass Filter
-    D0 = 50; % cut-off frequency
+    D0 = Dinput; % cut-off frequency
 
     % Set up range of variables
     u = 0:(P-1);

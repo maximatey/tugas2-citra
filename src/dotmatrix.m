@@ -1,4 +1,4 @@
-function dotmatrix = dotmatrix(image,kernel,i,j)
+function dotmatrix = dotmatrix(image,kernel,i,j,resultimagekonv)
     [row,col] = size(kernel);
     [rowimg,colimg,depth] = size(image);
     dividecol = floor(col/2);
@@ -17,9 +17,8 @@ function dotmatrix = dotmatrix(image,kernel,i,j)
             end
             itrrow = itrrow + 1;
         end
-        image(i,j,d) = max(result,0);
-        image(i,j,d) = min(result,255);
+        resultimagekonv(i,j,d) = result;
     end
-    dotmatrix = image;
+    dotmatrix = resultimagekonv;
 end
 

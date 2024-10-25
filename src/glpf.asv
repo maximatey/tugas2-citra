@@ -9,21 +9,20 @@ function glpf = glpf(image,Dinput)
     %Step 2: Bentuklah citra padding fp(x,y) berukuran P X Q dengan
     % menambahkan pixel-pixel bernilai nol pada f(x, y).
     f = im2double(f);
-    for d = 1:depth
-        for i = 1:P
-         for j = 1:Q
-             if i <= M && j<= N
-                 fp(i,j,d) = f(i,j,d);
-             else
-                 fp(i,j,d) = 0;
-             end
+    for d = 1:dep
+    for i = 1:P
+     for j = 1:Q
+         if i <= M && j<= N
+             fp(i,j) = f(i,j);
+         else
+             fp(i,j) = 0;
          end
-        end
+     end
     end
     matrixresult = fp;
+    %Step 3: Lakukan transformasi Fourier pada fp(x, y) dan tampilkan Fourier Spectrum
 
     for i=1:depth
-        %Step 3: Lakukan transformasi Fourier pada fp(x, y) dan tampilkan Fourier Spectrum
         F = fftshift(fft2(fp(:,:,i))); % move the origin of the transform to the center of the frequency rectangle
         %Step 4: Bangkitkan fungsi penapis H berukuran P x Q, misalkan penapis
         %yang digunakan adalah Ideal Lowpass Filter (ILPF)

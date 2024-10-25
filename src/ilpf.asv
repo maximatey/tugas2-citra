@@ -1,5 +1,6 @@
-function blpf = blpf(image,Dinput)
+function ilpf = ilpf(image,Dinput)
     f = image;
+%     imshow(f);
     [M, N, depth] = size(f);
     f = im2double(f);
     
@@ -8,18 +9,19 @@ function blpf = blpf(image,Dinput)
     Q = 2 * N;
     
     % Step 2: Bentuk citra padding
-    fp = zeros(P, Q,depth); % Inisialisasi citra padding
-    fp(1:M, 1:N,:) = f; % Menyalin citra asli ke bagian atas kiri dari citra padded
-    
+    fp = zeros(P, Q, depth); % Inisialisasi citra padding
+    fp(1:M, 1:N,1:depth) = f; % Menyalin citra asli ke bagian atas kiri dari citra padded
+%     imshow(fp); title('padded image');
     matrixresult = fp;
     % Step 3: Lakukan transformasi Fourier pada fp(x, y)
-    for i = 1:depth
+    for i=1:depth
         F = fftshift(fft2(fp(:,:,i))); % Transformasi Fourier
+    %     S2 = log(1 + abs(F)); % Spektrum Fourier
+    %     figure, imshow(S2, []); title('Fourier spectrum');
         
-        % Step 4: Bangkitkan fungsi penapis H untuk Butterworth Lowpass Filter
+        % Step 4: Bangkitkan fungsi penapis H untuk Ideal Lowpass Filter
         D0 = Dinput; % cut-off frequency
-        n = 2;   % order of the filter
-        
+    
         % Set up range of variables
         u = 0:(P-1);
         v = 0:(Q-1);
@@ -34,9 +36,8 @@ function blpf = blpf(image,Dinput)
         [V, U] = meshgrid(v, u);
         D = sqrt(U.^2 + V.^2);
         
-        % Butterworth Lowpass Filter
-        H = 1 ./ (1 + (D ./ D0).^(2*n)); % Fungsi Butterworth
-        H(D0 == 0) = 0; % Menangani kasus D = 0
+        % Ideal Lowpass Filter
+        H = double(D <= D0); % Membuat filter ideal (1 untuk frekuensi kurang dari sama dengan D0, 0 untuk lainnya)
         H = fftshift(H); % Pindahkan pusat ke frekuensi
         
         
@@ -47,8 +48,6 @@ function blpf = blpf(image,Dinput)
         % Step 6: Ambil bagian real dari inverse FFT of G
         matrixresult(:,:,i) = real(ifft2(G1)); % Aplikasi inverse DFT
     end
-    
     % Step 7: Potong bagian kiri atas sehingga menjadi berukuran citra semula
-    blpf = matrixresult(1:M, 1:N,:); % Resize the image untuk menghapus padding
-    
+    ilpf = matrixresult(1:M, 1:N,:); % Resize the image untuk menghapus padding
 end
