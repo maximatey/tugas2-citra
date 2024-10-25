@@ -256,7 +256,7 @@ function filtered_image = alpha_trimmed_mean_filter(image, trim_factor)
                 colEnd = min(cols, j + halfWindow);
                 
                 % Extract the local neighborhood
-                localRegion = img(rowStart:rowEnd, colStart:colEnd, k);
+                localRegion = img(rowStart:rowEnd, colStart:colEnd);
                 
                 % Sort the local neighborhood
                 sortedRegion = sort(localRegion(:));
@@ -267,12 +267,12 @@ function filtered_image = alpha_trimmed_mean_filter(image, trim_factor)
                 
                 % Calculate the mean of the remaining pixels
                 if ~isempty(trimmedRegion)
-                    filteredImg(i, j, k) = mean(trimmedRegion);
+                    filteredImg(i, j) = mean(trimmedRegion);
                 else
-                    filteredImg(i, j, k) = 0; % Set to 0 if no pixels remain after trimming
+                    filteredImg(i, j) = 0; % Set to 0 if no pixels remain after trimming
                 end
             end
         end
     end
-    filtered_image = filteredImg/255;
+    filtered_image = image;
 end

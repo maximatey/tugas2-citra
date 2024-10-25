@@ -1,5 +1,5 @@
 function filtered_image = periodic_moon()
-    image = imread('moon_periodic.jpeg');
+    image = imread('moon_periodic.tif');
     [M,N,~] = size(image);
 
     figure, imshow(image); title('Original Image');
