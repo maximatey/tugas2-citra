@@ -2,14 +2,14 @@ function filtered_image = periodic_bird()
     image = imread('bird_periodic.jpeg');
     [M,N,~] = size(image);
 
-    figure, imshow(image); title('Original Image');
+%     figure, imshow(image); title('Original Image');
 
     f = im2double(image(:,:,1));
     F = fft2(f);
     F = fftshift(F);
     S2 = log(1+abs(F));
 
-    figure, imshow(S2,[]); title ('Fourier Spectrum');
+%     figure, imshow(S2,[]); title ('Fourier Spectrum');
     % Set up range of variables.
     u = 0:(M-1);
     v = 0:(N-1);
@@ -29,7 +29,7 @@ function filtered_image = periodic_bird()
     n = 1; 
     H = 1./(1 + ((D*W)./(D.^2 - D0^2)).^(2*n));
     H = fftshift(H);
-    figure;imshow(H);title('Butterworth Bandreject Filter orde n = 1');
+%     figure;imshow(H);title('Butterworth Bandreject Filter orde n = 1');
     
     G = H.* F;
 
@@ -38,11 +38,11 @@ function filtered_image = periodic_bird()
     n = 1; 
     H = 1./(1 + ((D*W)./(D.^2 - D0^2)).^(2*n));
     H = fftshift(H);
-    figure;imshow(H);title('Butterworth Bandreject Filter orde n = 1');
+%     figure;imshow(H);title('Butterworth Bandreject Filter orde n = 1');
     
     J = H.* G;
 
     J = real(ifft2(ifftshift(J)));
-    figure; imshow(J);title('Output image');
+%     figure; imshow(J);title('Output image');
     filtered_image = J;
 end

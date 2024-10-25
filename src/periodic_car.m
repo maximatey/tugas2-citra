@@ -2,14 +2,14 @@ function filtered_image = periodic_car()
     image = imread('car_periodic.png');
     [M,N,~] = size(image);
 
-    figure, imshow(image); title('Original Image');
+%     figure, imshow(image); title('Original Image');
 
     f = im2double(image(:,:,1));
     F = fft2(f);
     F = fftshift(F);
     S2 = log(1+abs(F));
 
-    figure, imshow(S2,[]); title ('Fourier Spectrum');
+%     figure, imshow(S2,[]); title ('Fourier Spectrum');
 
     colsToMod = [39,63,87,115,137,138,139,163,238,239,240];
 
@@ -26,8 +26,8 @@ function filtered_image = periodic_car()
     end
     S2 = log(1+abs(F));
 
-    figure, imshow(S2,[]); title ('Fourier Spectrum After');
+%     figure, imshow(S2,[]); title ('Fourier Spectrum After');
     G = real(ifft2(ifftshift(F)));
-    figure; imshow(G);title('Output image');
+%     figure; imshow(G);title('Output image');
     filtered_image = G;
 end
