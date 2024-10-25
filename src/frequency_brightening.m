@@ -8,9 +8,6 @@ function bright_image = frequency_brightening(image, val)
         for channel = 1:3
             f = image(:, :, channel); % Extract the channel
             f = im2double(f); % Convert to double
-            
-            % Display original channel
-            figure; imshow(f); title(['Original Channel ', num2str(channel)]);
 
             % Get the size of the channel
             [M, N] = size(f);
@@ -23,8 +20,6 @@ function bright_image = frequency_brightening(image, val)
 
             % Fourier Transform
             F = fftshift(fft2(fp));
-            S2 = log(1 + abs(F)); % Fourier Spectrum
-            figure, imshow(S2, []); title(['Fourier Spectrum Channel ', num2str(channel)]);
 
             % Create Low Pass Filter (LPF)
             u = 0:(P-1);
@@ -57,8 +52,6 @@ function bright_image = frequency_brightening(image, val)
         % If not RGB, process as grayscale (existing logic)
         f = im2double(image);
     
-        % Menampilkan citra asli
-        figure; imshow(f); title('Original Image');
     
         % Mendapatkan ukuran citra
         [M, N] = size(f);
@@ -71,8 +64,6 @@ function bright_image = frequency_brightening(image, val)
     
         % Transformasi Fourier
         F = fftshift(fft2(fp));
-        S2 = log(1 + abs(F)); % Spektrum Fourier
-        figure, imshow(S2, []); title('Fourier Spectrum');
     
         % Set up range of variables.
         u = 0:(P-1);
@@ -103,7 +94,4 @@ function bright_image = frequency_brightening(image, val)
         % Menampilkan citra hasil
         bright_image = G2(1:M, 1:N); % Citra yang lebih terang
     end
-    
-    % Display the final brightened image
-    figure; imshow(bright_image); title('Brightened RGB Image after Frequency Filtering');
 end
