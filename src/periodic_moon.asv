@@ -1,0 +1,26 @@
+function filtered_image = periodic_moon()
+    image = imread('moon_periodic.jpeg');
+    [M,N,~] = size(image);
+
+    figure, imshow(image); title('Original Image');
+
+    f = im2double(image(:,:,1));
+    F = fft2(f);
+    F = fftshift(F);
+    S2 = log(1+abs(F));
+
+    figure, imshow(S2,[]); title ('Fourier Spectrum');
+    cols_to_zero = [5, 6, 7, 19, 20, 21, 47, 57, 78, 254, 250, 213, 203, 182];
+    rows_to_zero = [28, 46, 151, 168];
+    for col = cols_to_zero
+        for row = rows_to_zero
+            F(row, col) = 0;
+        end
+    end
+    S2 = log(1+abs(F));
+
+    figure, imshow(S2,[]); title ('Fourier Spectrum After');
+    G = real(ifft2(ifftshift(F)));
+    figure; imshow(G);title('Output image');
+    filtered_image = abs(F(:,255));
+end
