@@ -10,7 +10,8 @@ function wiener = wiener (blured,psf,K)
         channel = image(:,:,i);
         G = fft2(channel);
 
-        wienerchannel = (1./H) .* (conj(H)./(conj(H) + K));
+        abskuadrath = conj(H) .* H;
+        wienerchannel = (1./H) .* (abskuadrath./(abskuadrath + K));
         
         hasilchanel = G .* wienerchannel;
 
